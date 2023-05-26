@@ -1,0 +1,8 @@
+{ 
+    "type": "mongodb", 
+    "url": "mongodb+srv://tinho:e2AyDLohJHVBxGYt@cluster0.jhixplb.mongodb.net/test",
+    "database": "Colyseus", 
+    "synchronize": true, 
+    "logging": true, 
+    "useUnifiedTopology": true
+ }
