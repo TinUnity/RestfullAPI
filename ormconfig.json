@@ -4,5 +4,15 @@
     "database": "Colyseus", 
     "synchronize": true, 
     "logging": true, 
-    "useUnifiedTopology": true
+    "useUnifiedTopology": true,
+    "entities": [ 
+        "src/Entities/**/*.ts" 
+     ], 
+     "migrations": [ "src/migration/**/*.ts" 
+     ], 
+     "subscribers": [ "src/subscriber/**/*.ts" 
+     ], 
+     "cli": { 
+        "entitiesDir": "src/entity", "migrationsDir": "src/migration", "subscribersDir": "src/subscriber" 
+     } 
  }
