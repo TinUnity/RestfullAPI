@@ -42,15 +42,15 @@ controller.post('/register', async (req, res) => {
         if (!user) {
             const genPassword = await encryptPassword(userManager.password, 10);
 
-            // const UserDB = new User();
-            // UserDB.userId = generateRandomString();
-            // UserDB.gmail = userManager.gmail;
-            // UserDB.password = genPassword;
-            // UserDB.username = userManager.username;
-            // UserDB.isVerify = false;
+            const UserDB = new User();
+            UserDB.userId = generateRandomString();
+            UserDB.gmail = userManager.gmail;
+            UserDB.password = genPassword;
+            UserDB.username = userManager.username;
+            UserDB.isVerify = false;
 
 
-            // await entityManager.save(UserDB);
+            await entityManager.save(UserDB);
 
             // MailController.sendVerify(UserDB.gmail, req);
             let resData = new responseData();
