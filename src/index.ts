@@ -17,8 +17,7 @@ createConnection({
     logging: true,
     useUnifiedTopology: true,
     entities: [
-        "lib/Entities/*{.ts,.js}"
-        || "src/Entities/*{.ts,.js}",
+        __dirname + '/../**/*.{js,ts}'
     ]
 }).then(async connection => {
     console.log('TypeOrm With Mongodb');
