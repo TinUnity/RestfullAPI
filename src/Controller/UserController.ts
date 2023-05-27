@@ -1,10 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { getMongoManager } from 'typeorm';
-import {User} from '../Entities/UserDB';
+import { User } from '../Entities/UserDB';
 import { responseData } from '../ThirdPartyFunction/ResponseData';
 import { getEmailToString } from '../ThirdPartyFunction/RegularString';
-import {encryptPassword,generateRandomString} from '../ThirdPartyFunction/encrypt';
+import { encryptPassword, dencryptPassword, createHex, generateRandomString} from '../ThirdPartyFunction/encrypt';
+import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
 
 const MailController = require('./MailController');
 const controller = express();
@@ -69,5 +70,67 @@ controller.post('/register', async (req, res) => {
     }
 });
 
+controller.post('/login', async (req, res) => {
+    try {
+        const entityManager = getMongoManager();
+        let reqData = {
+            'gmail': req.body.gmail,
+            'password': req.body.password,
+            'isVerify': req.body.isVerify,
+        }
+
+        if (!getEmailToString(reqData.gmail)) {
+            let resData = new responseData();
+            resData.message = "Email Not Valid";
+            resData.status_code = 200;
+            return res.status(resData.status_code).send(resData);
+        } else {
+
+            if (!reqData.password) {
+                let resData = new responseData();
+                resData.message = "Password is empty, please re-check";
+                resData.status_code = 200;
+                return res.status(resData.status_code).send(resData);
+            }
+
+            const getGmailDatabase = await entityManager.findOneBy(User, {
+                gmail: reqData.gmail
+            })
+
+            if (getGmailDatabase) {
+                if (!getGmailDatabase.isVerify) {
+                    let resData = new responseData();
+                    resData.message = "This gmail hasn't confirmed yet, please confirm";
+                    resData.status_code = 200;
+
+                    return res.status(resData.status_code).send(resData);
+                } else {
+                    const isValid = await dencryptPassword(reqData.password, getGmailDatabase?.password);
+                    if (isValid) {
+                        process.env.ACESS_TOKEN_SECRET = createHex();
+                        const token = createToken(getGmailDatabase.userId);
+
+                        return await res.setHeader('authorization', "token").status(200).send(JSON.parse(JSON.stringify(getGmailDatabase)));
+                    } else {
+                        let resData = new responseData();
+                        resData.message = "Password is invalid, please re-check";
+                        resData.status_code = 200;
+
+                        return res.status(resData.status_code).send(resData);
+                    }
+                }
+            }
+            else {
+                let resData = new responseData();
+                resData.message = "Account doesn't exists";
+                resData.status_code = 200;
+
+                return res.status(resData.status_code).send(resData);
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 module.exports = controller;
