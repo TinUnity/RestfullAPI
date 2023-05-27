@@ -16,9 +16,7 @@ createConnection({
     synchronize: true,
     logging: true,
     useUnifiedTopology: true,
-    entities: [
-        __dirname + '/entities/**/*.{js,ts}'
-    ]
+    entities: [User]
 }).then(async connection => {
     console.log('TypeOrm With Mongodb');
     app.use(require('./Routers/index'));

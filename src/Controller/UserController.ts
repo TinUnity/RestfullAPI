@@ -6,7 +6,7 @@ import { responseData } from '../ThirdPartyFunction/ResponseData';
 import { getEmailToString } from '../ThirdPartyFunction/RegularString';
 import {encryptPassword,generateRandomString} from '../ThirdPartyFunction/encrypt';
 
-
+const MailController = require('./MailController');
 const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
@@ -52,7 +52,7 @@ controller.post('/register', async (req, res) => {
 
             await entityManager.save(UserDB);
 
-            // MailController.sendVerify(UserDB.gmail, req);
+            MailController.sendVerify(UserDB.gmail, req);
             let resData = new responseData();
             resData.message = "Please Confirm Verify Gmail";
             resData.status_code = 200;
