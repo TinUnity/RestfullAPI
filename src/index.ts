@@ -12,11 +12,14 @@ createConnection({
     type: "mongodb",
     useNewUrlParser: true,
     url: "mongodb+srv://tinho:e2AyDLohJHVBxGYt@cluster0.jhixplb.mongodb.net/test",
-    database: "Colyseus", 
-    synchronize: true, 
-    logging: true, 
+    database: "Colyseus",
+    synchronize: true,
+    logging: true,
     useUnifiedTopology: true,
-    entities: [User]
+    entities: [
+        "lib/Entities/*{.ts,.js}"
+        || "src/Entities/*{.ts,.js}",
+    ]
 }).then(async connection => {
     console.log('TypeOrm With Mongodb');
     app.use(require('./Routers/index'));
