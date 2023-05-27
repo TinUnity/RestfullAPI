@@ -2,15 +2,31 @@ import nodemailer from 'nodemailer';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { getMongoManager } from 'typeorm';
-import {User} from '../Entities/UserDB';
-import {responseData} from '../ThirdPartyFunction/ResponseData';
+import { User } from '../Entities/UserDB';
+import { responseData } from '../ThirdPartyFunction/ResponseData';
 
 var controller = express();
 controller.use(bodyParser.json());
 var rad;
 
+controller.get(`/SendRequest`, async (req, res) => {
+    if (req.body.gmail) {
+        sendVerify(req.body.gmail, req);
+        let resData = new responseData();
+        resData.message = "Sent A Confirmation";
+        resData.status_code = 200;
+        res.status(resData.status_code).send(resData);
+    }
+    else {
+        let resData = new responseData();
+        resData.message = "Bad Request";
+        resData.status_code = 400;
+        res.status(resData.status_code).send(resData);
+    }
+})
+
 function sendVerify(input: any, req) {
-    rad = input;
+    const rad = input;
     let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + rad;
 
     var transporter = nodemailer.createTransport({
@@ -42,33 +58,33 @@ controller.get(`/verify-mail`, async (req, res) => {
     try {
         let entityManager = getMongoManager();
         if (req.query.id == rad) {
-            const userSelected = await entityManager.findOneBy(User,{
-                gmail: req.query.id 
+            const userSelected = await entityManager.findOneBy(User, {
+                gmail: req.query.id
             });
 
-            if(userSelected){
+            if (userSelected) {
                 userSelected.isVerify = true;
                 await entityManager.save(userSelected);
-                
+
                 let resData = new responseData();
                 resData.message = "Gmail is confirmed verification";
                 resData.status_code = 200;
                 res.status(resData.status_code).send(resData);
             }
-            else{
+            else {
                 let resData = new responseData();
                 resData.message = "Bad Request";
                 resData.status_code = 400;
                 res.status(resData.status_code).send(resData);
             }
-            
+
         } else {
             let resData = new responseData();
-                resData.message = "Bad Request";
-                resData.status_code = 400;
+            resData.message = "Bad Request";
+            resData.status_code = 400;
             res.status(resData.status_code).send(resData);
         }
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
 })
