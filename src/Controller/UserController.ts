@@ -54,35 +54,10 @@ controller.post('/register', async (req, res) => {
 
             await entityManager.save(UserDB);
 
-            // MailController.sendVerify(UserDB.gmail, req);
+            MailController.sendVerify(UserDB.gmail, req);
             let resData = new responseData();
             resData.message = "Please Confirm Verify Gmail";
             resData.status_code = 200;
-            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + UserDB.gmail;
-
-            var transporter = nodemailer.createTransport({
-                service: "Gmail",
-                auth: {
-                    user: 'honguyenthanhtin17@gmail.com',
-                    pass: 'yfvywupoigcbaalf',
-                }
-            });
-
-            var mailOptions = {
-                from: 'Colyseus@gmail.com',
-                to: UserDB.gmail,
-                subject: 'Confirmation Verify Gmail For Colyseus',
-                text: 'You reveice a message from Colyseus@gmail.com',
-                html: '<p>ColyseusYou requested for email verification, kindly use this <a href=' + link + '>link</a> to verify your email address</p>',
-            }
-
-            transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Sent A Message' + info.response);
-                }
-            });
             return res.status(resData.status_code).send(resData);
         }
         else {

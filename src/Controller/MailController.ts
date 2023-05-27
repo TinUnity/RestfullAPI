@@ -9,22 +9,6 @@ var controller = express();
 controller.use(bodyParser.json());
 var rad;
 
-controller.get(`/SendRequest`, async (req, res) => {
-    if (req.body.gmail) {
-        sendVerify(req.body.gmail, req);
-        let resData = new responseData();
-        resData.message = "Sent A Confirmation";
-        resData.status_code = 200;
-        res.status(resData.status_code).send(resData);
-    }
-    else {
-        let resData = new responseData();
-        resData.message = "Bad Request";
-        resData.status_code = 400;
-        res.status(resData.status_code).send(resData);
-    }
-})
-
 function sendVerify(input: any, req) {
     const rad = input;
     let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + rad;
@@ -33,7 +17,7 @@ function sendVerify(input: any, req) {
         service: "Gmail",
         auth: {
             user: 'honguyenthanhtin17@gmail.com',
-            pass: 'yfvywupoigcbaalf',
+            pass: 'Thanhtin123!@#',
         }
     });
 
