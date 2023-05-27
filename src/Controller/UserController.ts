@@ -7,7 +7,7 @@ import { getEmailToString } from '../ThirdPartyFunction/RegularString';
 import { encryptPassword, dencryptPassword, createHex, generateRandomString} from '../ThirdPartyFunction/encrypt';
 import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
 
-const MailController = require('./MailController');
+const MailController = require('../Controller/MailController');
 const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
