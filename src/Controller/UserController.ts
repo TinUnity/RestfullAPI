@@ -6,7 +6,6 @@ import { responseData } from '../ThirdPartyFunction/ResponseData';
 import { getEmailToString } from '../ThirdPartyFunction/RegularString';
 import { encryptPassword, dencryptPassword, createHex, generateRandomString } from '../ThirdPartyFunction/encrypt';
 import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
-import nodemailer from 'nodemailer';
 
 const MailController = require('../Controller/MailController');
 const controller = express();
