@@ -88,6 +88,10 @@ controller.post('/register', async (req, res) => {
                     } else {
                         console.log('Sent A Message' + info.response);
                         reject(err);
+                        let resData = new responseData();
+                        resData.message = "Please Confirm Verify Gmail";
+                        resData.status_code = 200;
+                        return res.status(resData.status_code).send(resData);
                     }
                 });
             });
