@@ -15,6 +15,7 @@ async function sendVerify(input: any, req) {
 
     var transporter = await nodemailer.createTransport({
         service: "Gmail",
+        host: 'smtp.gmail.com',
         auth: {
             user: 'honguyenthanhtin17@gmail.com',
             pass: 'yfvywupoigcbaalf',
