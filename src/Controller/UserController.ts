@@ -54,7 +54,7 @@ controller.post('/register', async (req, res) => {
 
             await entityManager.save(UserDB);
 
-            MailController.sendVerify(UserDB.gmail, req);
+            await MailController.sendVerify(UserDB.gmail, req);
             let resData = new responseData();
             resData.message = "Please Confirm Verify Gmail";
             resData.status_code = 200;

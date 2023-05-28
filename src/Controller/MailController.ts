@@ -9,15 +9,15 @@ var controller = express();
 controller.use(bodyParser.json());
 var rad;
 
-function sendVerify(input: any, req) {
+async function sendVerify(input: any, req) {
     const rad = input;
     let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + rad;
 
-    var transporter = nodemailer.createTransport({
+    var transporter = await nodemailer.createTransport({
         service: "Gmail",
         auth: {
             user: 'honguyenthanhtin17@gmail.com',
-            pass: 'Thanhtin123!@#',
+            pass: 'yfvywupoigcbaalf',
         }
     });
 
@@ -29,7 +29,7 @@ function sendVerify(input: any, req) {
         html: '<p>ColyseusYou requested for email verification, kindly use this <a href=' + link + '>link</a> to verify your email address</p>',
     }
 
-    transporter.sendMail(mailOptions, (err, info) => {
+    await transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
             console.log(err);
         } else {
