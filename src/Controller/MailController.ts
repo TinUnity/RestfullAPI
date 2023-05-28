@@ -36,6 +36,7 @@ async function sendVerify(input: any, req) {
             if (err) {
                 console.log(err);
             } else {
+                return true;
                 console.log('Sent A Message' + info.response);
             }
         });
