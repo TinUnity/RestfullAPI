@@ -144,9 +144,9 @@ controller.post('/login', async (req, res) => {
                     const isValid = await dencryptPassword(reqData.password, getGmailDatabase?.password);
                     if (isValid) {
                         process.env.ACESS_TOKEN_SECRET = createHex();
-                        const token = createToken(getGmailDatabase.userId);
+                        const token = await createToken(getGmailDatabase.userId);
 
-                        return await res.setHeader('authorization', "token").status(200).send(JSON.parse(JSON.stringify(getGmailDatabase)));
+                        return res.setHeader('authorization', token).status(200).send(JSON.parse(JSON.stringify(getGmailDatabase)));
                     } else {
                         let resData = new responseData();
                         resData.message = "Password is invalid, please re-check";
