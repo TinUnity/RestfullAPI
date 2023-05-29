@@ -1,4 +1,3 @@
-import nodemailer from 'nodemailer';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { getMongoManager } from 'typeorm';
@@ -9,8 +8,13 @@ var controller = express();
 controller.use(bodyParser.json());
 var rad;
 
+function setRad(value:any){
+    rad = value;
+}
+
 controller.get(`/verify-mail`, async (req, res) => {
     try {
+        console.log(rad);
         let entityManager = getMongoManager();
         if (req.query.id == rad) {
             const userSelected = await entityManager.findOneBy(User, {
@@ -47,5 +51,5 @@ controller.get(`/verify-mail`, async (req, res) => {
 
 module.exports = {
     controller: controller,
-    rad : rad
+    setRad : setRad
 }

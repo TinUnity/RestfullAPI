@@ -8,7 +8,7 @@ import { getEmailToString } from '../ThirdPartyFunction/RegularString';
 import { encryptPassword, dencryptPassword, createHex, generateRandomString } from '../ThirdPartyFunction/encrypt';
 import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
 
-var radMail = require('../Controller/MailController').rad;
+var radMail = require('../Controller/MailController');
 const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
@@ -51,12 +51,10 @@ controller.post('/register', async (req, res) => {
             UserDB.username = userManager.username;
             UserDB.isVerify = false;
 
-
             await entityManager.save(UserDB);
 
-            
-            radMail = UserDB.gmail;
-            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + radMail;
+            radMail.setRad(UserDB.gmail);
+            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + UserDB.gmail;
 
             const transporter = nodemailer.createTransport({
                 service: "Gmail",
