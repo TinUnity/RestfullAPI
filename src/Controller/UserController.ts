@@ -8,7 +8,7 @@ import { getEmailToString } from '../ThirdPartyFunction/RegularString';
 import { encryptPassword, dencryptPassword, createHex, generateRandomString } from '../ThirdPartyFunction/encrypt';
 import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
 
-// const MailController = require('../Controller/MailController');
+const MailController = require('../Controller/MailController');
 const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
@@ -54,9 +54,9 @@ controller.post('/register', async (req, res) => {
 
             await entityManager.save(UserDB);
 
-            // const sendMail = await MailController.sendVerify(UserDB.gmail, req);
-            const rad = UserDB.gmail;
-            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + rad;
+            
+            MailController.rad = UserDB.gmail;
+            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + MailController.rad;
 
             const transporter = nodemailer.createTransport({
                 service: "Gmail",

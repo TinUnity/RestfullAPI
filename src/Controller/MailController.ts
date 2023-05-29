@@ -9,39 +9,6 @@ var controller = express();
 controller.use(bodyParser.json());
 var rad;
 
-async function sendVerify(input: any, req) {
-    const rad = input;
-    let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + rad;
-
-    const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        host: 'smtp.gmail.com',
-        auth: {
-            user: 'honguyenthanhtin17@gmail.com',
-            pass: 'yfvywupoigcbaalf',
-        },
-        secure: true,
-    });
-
-    const mailOptions = {
-        from: 'Colyseus@gmail.com',
-        to: input,
-        subject: 'Confirmation Verify Gmail For Colyseus',
-        text: 'You reveice a message from Colyseus@gmail.com',
-        html: '<p>ColyseusYou requested for email verification, kindly use this <a href=' + link + '>link</a> to verify your email address</p>',
-    };
-
-    await new Promise((resolve, reject) => {
-        transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Sent A Message' + info.response);
-            }
-        });
-    });
-}
-
 controller.get(`/verify-mail`, async (req, res) => {
     try {
         let entityManager = getMongoManager();
@@ -78,7 +45,4 @@ controller.get(`/verify-mail`, async (req, res) => {
 })
 
 
-module.exports = {
-    controller: controller,
-    sendVerify: sendVerify,
-};
+module.exports = controller
