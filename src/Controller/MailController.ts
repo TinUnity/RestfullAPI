@@ -45,4 +45,7 @@ controller.get(`/verify-mail`, async (req, res) => {
 })
 
 
-module.exports = controller
+module.exports = {
+    controller: controller,
+    rad : rad
+}

@@ -8,7 +8,7 @@ import { getEmailToString } from '../ThirdPartyFunction/RegularString';
 import { encryptPassword, dencryptPassword, createHex, generateRandomString } from '../ThirdPartyFunction/encrypt';
 import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
 
-const MailController = require('../Controller/MailController');
+var radMail = require('../Controller/MailController').rad;
 const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
@@ -55,8 +55,8 @@ controller.post('/register', async (req, res) => {
             await entityManager.save(UserDB);
 
             
-            MailController.rad = UserDB.gmail;
-            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + MailController.rad;
+            radMail = UserDB.gmail;
+            let link = "http://" + req.get('host') + "/api/v1/mail/verify-mail?id=" + radMail;
 
             const transporter = nodemailer.createTransport({
                 service: "Gmail",
@@ -82,12 +82,12 @@ controller.post('/register', async (req, res) => {
                         console.log(err);
                         reject(err);
                         let resData = new responseData();
-                        resData.message = "Please Confirm Verify Gmail";
-                        resData.status_code = 200;
+                        resData.message = "Can't Send A Verify Mail";
+                        resData.status_code = 400;
                         return res.status(resData.status_code).send(resData);
                     } else {
                         console.log('Sent A Message' + info.response);
-                        reject(err);
+                        resolve(info);
                         let resData = new responseData();
                         resData.message = "Please Confirm Verify Gmail";
                         resData.status_code = 200;
