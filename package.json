@@ -23,6 +23,7 @@
     "nodemailer": "^6.9.2",
     "ts-node": "^10.9.1",
     "typeorm": "^0.3.16",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "websocket": "^1.0.34"
   }
 }

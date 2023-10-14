@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import { User } from './Entities/UserDB';
 import { PlayerManager } from './Entities/PlayerManagerDB';
 import { Player } from './Entities/PlayerDB';
+import WebSocket from 'websocket';
 
 const app = express();
 app.use(cors());
@@ -18,10 +19,10 @@ createConnection({
     synchronize: true,
     logging: true,
     useUnifiedTopology: true,
-    entities: [User,PlayerManager,Player],
+    entities: [User, PlayerManager, Player],
     extra: {
-        connectionLimit : 10,
-    },    
+        connectionLimit: 10,
+    },
 }).then(async connection => {
     console.log('TypeOrm With Mongodb');
     app.use(require('./Routers/index'));
@@ -29,4 +30,26 @@ createConnection({
     app.listen(port, () => console.log("connected to port:" + port));
 }).catch(err => {
     console.log(err);
+});
+
+const webSocket = new WebSocket.server({
+    httpServer: app,
+});
+
+webSocket.on('request', (request) => {
+    const connection = request.accept(null,request.origin);
+
+    connection.on('message', (message) => {
+        if (message.type === 'utf8') {
+            console.log(`Received: ${message.utf8Data}`);
+
+            // Send a response back to the client
+            console.log("message: "+message);
+            connection.sendUTF(`You sent: ${message.utf8Data}`);
+        }
+    });
+
+    connection.on('close', (reasonCode, description) => {
+        console.log(`Client disconnected: ${reasonCode} - ${description}`);
+    });
 });
