@@ -18,7 +18,10 @@ createConnection({
     synchronize: true,
     logging: true,
     useUnifiedTopology: true,
-    entities: [User,PlayerManager,Player]
+    entities: [User,PlayerManager,Player],
+    extra: {
+        connectionLimit : 10,
+    },    
 }).then(async connection => {
     console.log('TypeOrm With Mongodb');
     app.use(require('./Routers/index'));
