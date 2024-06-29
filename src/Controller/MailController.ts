@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getMongoManager } from 'typeorm';
 import { User } from '../Entities/UserDB';
 import { responseData } from '../ThirdPartyFunction/ResponseData';
+import { appDataSource } from '../index';
 
 var controller = express();
 controller.use(bodyParser.json());
@@ -15,9 +15,9 @@ function setRad(value:any){
 controller.get(`/verify-mail`, async (req, res) => {
     try {
         console.log(rad);
-        let entityManager = getMongoManager();
+        const entityManager = appDataSource.getMongoRepository(User)
         if (req.query.id == rad) {
-            const userSelected = await entityManager.findOneBy(User, {
+            const userSelected = await entityManager.findOneBy({
                 gmail: req.query.id
             });
 

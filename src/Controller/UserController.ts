@@ -1,7 +1,7 @@
 import express from 'express';
 import nodemailer from 'nodemailer';
 import bodyParser from 'body-parser';
-import { getMongoManager } from 'typeorm';
+import { appDataSource } from '../index';
 import { User } from '../Entities/UserDB';
 import { responseData } from '../ThirdPartyFunction/ResponseData';
 import { getEmailToString } from '../ThirdPartyFunction/RegularString';
@@ -13,7 +13,7 @@ const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
     try {
-        const entityManager = getMongoManager();
+        const entityManager = appDataSource.getMongoRepository(User)
         let userManager = {
             'gmail': req.body.gmail,
             'password': req.body.password,
@@ -38,7 +38,7 @@ controller.post('/register', async (req, res) => {
             resData.status_code = 200;
             return res.status(resData.status_code).send(resData);
         }
-        const user = await entityManager.findOneBy(User, {
+        const user = await entityManager.findOneBy({
             gmail: userManager.gmail
         });
         if (!user) {
@@ -108,7 +108,7 @@ controller.post('/register', async (req, res) => {
 
 controller.post('/login', async (req, res) => {
     try {
-        const entityManager = getMongoManager();
+        const entityManager = appDataSource.getMongoRepository(User)
         let reqData = {
             'gmail': req.body.gmail,
             'password': req.body.password,
@@ -129,7 +129,7 @@ controller.post('/login', async (req, res) => {
                 return res.status(resData.status_code).send(resData);
             }
 
-            const getGmailDatabase = await entityManager.findOneBy(User, {
+            const getGmailDatabase = await entityManager.findOneBy({
                 gmail: reqData.gmail
             })
 
