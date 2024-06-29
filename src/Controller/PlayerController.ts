@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { verifyToken } from '../ThirdPartyFunction/Authentication';
 import { responseData } from '../ThirdPartyFunction/ResponseData';
-import { getMongoManager } from 'typeorm';
+import { appDataSource } from '../index';
 import { PlayerManager } from '../Entities/PlayerManagerDB';
 import { User } from '../Entities/UserDB';
 
@@ -13,13 +13,13 @@ controller.post('/create-player', async (req, res) => {
     try {
         const tokenAuthority = req.headers['authorization'] as string;
         const checkToken = await verifyToken(tokenAuthority);
-        if (checkToken) {
-            const EntityManager = getMongoManager();
+        if (checkToken) {;
+            const EntityManager = appDataSource.getMongoRepository(User)
             let requestBody = {
                 'userId': req.body.userId,
                 players: req.body.players,
             };
-            const getUserId = await EntityManager.findOneBy(User, {
+            const getUserId = await EntityManager.findOneBy({
                 userId: requestBody.userId,
             })
             // if (requestBody) {
@@ -29,15 +29,13 @@ controller.post('/create-player', async (req, res) => {
             //     return res.setHeader('authorization', tokenAuthority).status(resData.status_code).send(resData);
             // }
 
+            const getPlayerManager = appDataSource.getMongoRepository(PlayerManager)
             if (getUserId) {
-                const getPlayerManager = await EntityManager.findOneBy(PlayerManager, {
+                const getPlayerManager = await EntityManager.findOneBy({
                     userId: requestBody.userId,
                 })
                 if (getPlayerManager) {
-                    // getPlayerManager.players = await EntityManager.find(Player);
-                    console.log(getPlayerManager.players.length);
-                    
-                    getPlayerManager.players = requestBody.players;
+                    getPlayerManager.userId = requestBody.userId;
 
                     await EntityManager.save(getPlayerManager);
                     return res.setHeader('authorization', tokenAuthority).status(200).send(JSON.parse(JSON.stringify(getPlayerManager)));
