@@ -51,7 +51,7 @@ const main = async () => {
     server.listen(port ,() => console.log("connected to port:" + port));
 };
 
-main().catch(err => {
-    console.error(err);
-    process.exit(1);
-    });
+// main().catch(err => {
+//     console.error(err);
+//     process.exit(1);
+//     });
