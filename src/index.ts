@@ -56,6 +56,4 @@ main().catch(err => {
     process.exit(1);
 });
 
-module.exports = {
-    appDataSource: appDataSource
-}
+module.exports = appDataSource;
