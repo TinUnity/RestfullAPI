@@ -28,12 +28,13 @@ export const appDataSource = new DataSource({
 })
 
 const main = async () => {
-    await appDataSource.initialize();
-    console.log('TypeOrm With Mongodb');
-    app.use(require('./Routers/index'));
-    console.log('Websocket is connected');
-    const webSocket = new WebSocket.server({ httpServer: server });
-    webSocket.on('request', (request) => {
+    try {
+        await appDataSource.initialize();
+        console.log('TypeOrm With Mongodb');
+        app.use(require('./Routers/index'));
+        console.log('Websocket is connected');
+        const webSocket = new WebSocket.server({ httpServer: server });
+        webSocket.on('request', (request) => {
         const connection = request.accept(null, request.origin);
 
         connection.on('message', (message) => {
@@ -49,6 +50,9 @@ const main = async () => {
         });
     });
     server.listen(port ,() => console.log("connected to port:" + port));
+    } catch (error) {
+        console.log(`error connect DB ${error}`);
+    }
 };
 
 main().catch(err => {
