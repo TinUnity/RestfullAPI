@@ -13,7 +13,7 @@ app.use(express.json());
 const port = Number(3000);
 const server = createServer(app);
 
-export var appDataSource = new DataSource({
+export const appDataSource = new DataSource({
     type: "mongodb",
     useNewUrlParser: true,
     url: "mongodb+srv://tinho:e2AyDLohJHVBxGYt@cluster0.jhixplb.mongodb.net/test",
@@ -28,13 +28,12 @@ export var appDataSource = new DataSource({
 })
 
 const main = async () => {
-    try {
-        await appDataSource.initialize();
-        console.log('TypeOrm With Mongodb');
-        app.use(require('./Routers/index'));
-        console.log('Websocket is connected');
-        const webSocket = new WebSocket.server({ httpServer: server });
-        webSocket.on('request', (request) => {
+    await appDataSource.initialize();
+    console.log('TypeOrm With Mongodb');
+    app.use(require('./Routers/index'));
+    console.log('Websocket is connected');
+    const webSocket = new WebSocket.server({ httpServer: server });
+    webSocket.on('request', (request) => {
         const connection = request.accept(null, request.origin);
 
         connection.on('message', (message) => {
@@ -50,9 +49,6 @@ const main = async () => {
         });
     });
     server.listen(port ,() => console.log("connected to port:" + port));
-    } catch (error) {
-        console.log(`error connect DB ${error}`);
-    }
 };
 
 main().catch(err => {
