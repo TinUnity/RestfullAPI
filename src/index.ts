@@ -13,7 +13,7 @@ app.use(express.json());
 const port = Number(3000);
 const server = createServer(app);
 
-export const appDataSource = new DataSource({
+export var appDataSource = new DataSource({
     type: "mongodb",
     useNewUrlParser: true,
     url: "mongodb+srv://tinho:e2AyDLohJHVBxGYt@cluster0.jhixplb.mongodb.net/test",
