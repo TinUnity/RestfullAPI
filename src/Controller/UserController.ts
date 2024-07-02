@@ -11,6 +11,7 @@ var radMail = require('../Controller/MailController');
 const appDataSource = require('./ConnectDatabaseController');
 const controller = express();
 controller.use(bodyParser.json());
+
 controller.post('/register', async (req, res) => {
     try {
         const entityManager = appDataSource.getMongoRepository(User)
