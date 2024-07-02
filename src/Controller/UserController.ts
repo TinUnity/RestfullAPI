@@ -8,7 +8,7 @@ import { encryptPassword, dencryptPassword, createHex, generateRandomString } fr
 import { createToken, verifyToken } from '../ThirdPartyFunction/Authentication';
 
 var radMail = require('../Controller/MailController');
-const appDataSource = require('./Controller/ConnectDatabaseController');
+const appDataSource = require('./ConnectDatabaseController');
 const controller = express();
 controller.use(bodyParser.json());
 controller.post('/register', async (req, res) => {
