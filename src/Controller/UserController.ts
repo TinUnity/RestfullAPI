@@ -1,7 +1,6 @@
 // import express from 'express';
 // import nodemailer from 'nodemailer';
 // import bodyParser from 'body-parser';
-// import { appDataSource } from '../index';
 // import { User } from '../Entities/UserDB';
 // import { responseData } from '../ThirdPartyFunction/ResponseData';
 // import { getEmailToString } from '../ThirdPartyFunction/RegularString';

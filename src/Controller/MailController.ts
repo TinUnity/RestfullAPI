@@ -2,7 +2,6 @@
 // import bodyParser from 'body-parser';
 // import { User } from '../Entities/UserDB';
 // import { responseData } from '../ThirdPartyFunction/ResponseData';
-// import { appDataSource } from '../index';
 
 // var controller = express();
 // controller.use(bodyParser.json());

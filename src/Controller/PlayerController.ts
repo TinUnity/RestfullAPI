@@ -2,7 +2,6 @@
 // import bodyParser from 'body-parser';
 // import { verifyToken } from '../ThirdPartyFunction/Authentication';
 // import { responseData } from '../ThirdPartyFunction/ResponseData';
-// import { appDataSource } from '../index';
 // import { PlayerManager } from '../Entities/PlayerManagerDB';
 // import { User } from '../Entities/UserDB';
 

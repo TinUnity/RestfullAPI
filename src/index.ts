@@ -13,22 +13,10 @@ app.use(express.json());
 const port = Number(3000);
 const server = createServer(app);
  
-const appDataSource = new DataSource({
-    type: "mongodb",
-    useNewUrlParser: true,
-    url: "mongodb+srv://tinho:e2AyDLohJHVBxGYt@cluster0.jhixplb.mongodb.net/test",
-    database: "Colyseus",
-    synchronize: true,
-    logging: true,
-    useUnifiedTopology: true,
-    entities: [User, PlayerManager, Player],
-    extra: {
-        connectionLimit: 10,
-    },
-})
+const dataSource = require('./Controller/ConnectDatabaseController');
 
 const main = async () => {
-    await appDataSource.initialize();
+    await dataSource.initialize();
     console.log('TypeOrm With Mongodb');
     app.use(require('./Routers/index'));
     console.log('Websocket is connected');
@@ -55,5 +43,3 @@ main().catch(err => {
     console.error(err);
     process.exit(1);
 });
-
-module.exports = appDataSource;
