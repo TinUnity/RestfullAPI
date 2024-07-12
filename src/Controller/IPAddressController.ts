@@ -1,11 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { ip, ipv6, mac } from 'address';
 
 var controller = express();
 controller.use(bodyParser.json());
 controller.get('/ipv4', function (req,res) {
-    console.log("Your IP Addresss is: " + req.socket.remoteAddress);
-    res.send("Your IP Addresss is: " + req.socket.remoteAddress);
+    mac(function (err, addr) {
+        console.log(addr);
+        res.send(addr);
+    });    
 });
 
 module.exports = controller;
